@@ -6,6 +6,7 @@ import com.debattle.model.Articles
 import com.debattle.model.Users
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
 class DAOFacadeImpl : DAOFacade {
@@ -29,5 +30,11 @@ class DAOFacadeImpl : DAOFacade {
     override suspend fun getAllArticles(): List<Article> = dbQuery {
         Articles.selectAll()
             .map(::resultRowToArticle)
+    }
+
+    override suspend fun getArticleById(articleId: Int): Article? = dbQuery {
+        Articles.select { Articles.articleId eq articleId }
+            .map(::resultRowToArticle)
+            .singleOrNull()
     }
 }

@@ -12,4 +12,13 @@ fun Route.articleRoute(dao: DAOFacade) {
 
         call.respond(HttpStatusCode.OK, "articles" to articles)
     }
+
+    get("article/{id}") {
+        val articleId = call.parameters["articleId"]?.toIntOrNull()
+
+        articleId?.let {
+            val article = dao.getArticleById(it)
+            call.respond(HttpStatusCode.OK, "article" to article)
+        } ?: call.respondRedirect("article")
+    }
 }
