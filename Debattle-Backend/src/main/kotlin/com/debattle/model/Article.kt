@@ -8,7 +8,7 @@ data class Article(
     val articleId: Int,
     val content: String,
     val author: String,
-    val likes: Int,
+    val like: Int,
     val agreement: Boolean
 )
 

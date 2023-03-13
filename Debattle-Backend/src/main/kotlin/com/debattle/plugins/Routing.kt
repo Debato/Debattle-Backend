@@ -1,6 +1,7 @@
 package com.debattle.plugins
 
 import com.debattle.dao.DAOFacade
+import com.debattle.route.articleRoute
 import com.debattle.route.userRoute
 import io.ktor.client.*
 import io.ktor.server.routing.*
@@ -13,5 +14,6 @@ fun Application.configureRouting() {
 
     routing {
         userRoute(dao, client)
+        articleRoute(dao)
     }
 }
