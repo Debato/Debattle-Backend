@@ -1,5 +1,6 @@
 package com.debattle.dao
 
+import com.debattle.model.Articles
 import com.debattle.model.Users
 import io.ktor.server.config.*
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ object DatabaseFactory {
 
         val database = Database.connect(jdbcURL, driverClassName, user, password)
 
-        transaction(database) { SchemaUtils.create(Users) }
+        transaction(database) { SchemaUtils.create(Users, Articles) }
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T =
