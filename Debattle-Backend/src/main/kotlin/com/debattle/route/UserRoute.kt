@@ -11,12 +11,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-const val kakaoUrl = "https://kapi.kakao.com/v2/user/me"
+const val KAKAO_URL = "https://kapi.kakao.com/v2/user/me"
+
 fun Route.userRoute(dao: DAOFacade, client: HttpClient) {
     post("user") {
         val token = call.request.header("token")
 
-        val user: KakaoUser = client.get(kakaoUrl) {
+        val user: KakaoUser = client.get(KAKAO_URL) {
             headers { append(HttpHeaders.Authorization, "Bearer $token") }
         }.body()
 
