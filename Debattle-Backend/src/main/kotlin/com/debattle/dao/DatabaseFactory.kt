@@ -1,8 +1,10 @@
 package com.debattle.dao
 
+import com.debattle.model.Users
 import io.ktor.server.config.*
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -15,7 +17,7 @@ object DatabaseFactory {
 
         val database = Database.connect(jdbcURL, driverClassName, user, password)
 
-        transaction(database) {}
+        transaction(database) { SchemaUtils.create(Users) }
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T =
