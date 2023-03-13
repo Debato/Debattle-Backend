@@ -8,4 +8,6 @@ interface DAOFacade {
     suspend fun getAllArticles(): List<Article>
 
     suspend fun getArticleById(articleId: Int): Article?
+
+    suspend fun postArticle(content: String, author: String, agreement: Boolean)
 }

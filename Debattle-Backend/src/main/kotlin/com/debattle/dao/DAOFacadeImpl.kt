@@ -9,6 +9,8 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
+const val INIT_LIKES = 0
+
 class DAOFacadeImpl : DAOFacade {
 
     private fun resultRowToArticle(row: ResultRow) = Article(
@@ -36,5 +38,14 @@ class DAOFacadeImpl : DAOFacade {
         Articles.select { Articles.articleId eq articleId }
             .map(::resultRowToArticle)
             .singleOrNull()
+    }
+
+    override suspend fun postArticle(content: String, author: String, agreement: Boolean): Unit = dbQuery {
+        Articles.insert {
+            it[Articles.content] = content
+            it[Articles.author] = author
+            it[like] = INIT_LIKES
+            it[Articles.agreement] = agreement
+        }
     }
 }
