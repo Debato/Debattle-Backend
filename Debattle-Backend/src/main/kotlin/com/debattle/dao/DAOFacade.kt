@@ -10,4 +10,6 @@ interface DAOFacade {
     suspend fun getArticleById(articleId: Int): Article?
 
     suspend fun postArticle(content: String, author: String, agreement: Boolean)
+
+    suspend fun updateLikes(articleId: Int)
 }

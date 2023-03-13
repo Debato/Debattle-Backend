@@ -4,12 +4,11 @@ import com.debattle.dao.DatabaseFactory.dbQuery
 import com.debattle.model.Article
 import com.debattle.model.Articles
 import com.debattle.model.Users
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
 
 const val INIT_LIKES = 0
+const val INCREASE_LIKES = 1
 
 class DAOFacadeImpl : DAOFacade {
 
@@ -46,6 +45,12 @@ class DAOFacadeImpl : DAOFacade {
             it[Articles.author] = author
             it[like] = INIT_LIKES
             it[Articles.agreement] = agreement
+        }
+    }
+
+    override suspend fun updateLikes(articleId: Int): Unit = dbQuery {
+        Articles.update({ Articles.articleId eq articleId }) {
+            it[like] = like.plus(INCREASE_LIKES)
         }
     }
 }

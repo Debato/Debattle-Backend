@@ -33,4 +33,14 @@ fun Route.articleRoute(dao: DAOFacade) {
 
         call.respond(HttpStatusCode.OK)
     }
+
+    post("article/like/{id}") {
+        val articleId = call.parameters["articleId"]?.toIntOrNull()
+
+        articleId?.let {
+            dao.updateLikes(articleId)
+            val articles = dao.getAllArticles()
+            call.respond(HttpStatusCode.OK, "articles" to articles)
+        }
+    }
 }
