@@ -12,6 +12,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 const val KAKAO_URL = "https://kapi.kakao.com/v2/user/me"
+const val DEFAULT_COUNT = 10
 
 fun Route.userRoute(dao: DAOFacade, client: HttpClient) {
     post("user") {
@@ -25,5 +26,12 @@ fun Route.userRoute(dao: DAOFacade, client: HttpClient) {
             dao.insertUser(properties.nickname, properties.thumbnailImage, kakaoAccount.email)
             call.respond(HttpStatusCode.Created)
         }
+    }
+
+    get("user/rank") {
+        val count = call.request.queryParameters["count"]?.toIntOrNull() ?: DEFAULT_COUNT
+        val users = dao.getTopUsers(count)
+
+        call.respond(HttpStatusCode.OK, "users" to users)
     }
 }

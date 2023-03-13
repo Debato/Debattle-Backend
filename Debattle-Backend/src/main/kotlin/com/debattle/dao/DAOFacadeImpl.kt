@@ -3,6 +3,7 @@ package com.debattle.dao
 import com.debattle.dao.DatabaseFactory.dbQuery
 import com.debattle.model.Article
 import com.debattle.model.Articles
+import com.debattle.model.User
 import com.debattle.model.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
@@ -11,13 +12,18 @@ const val INIT_LIKES = 0
 const val INCREASE_LIKES = 1
 
 class DAOFacadeImpl : DAOFacade {
-
     private fun resultRowToArticle(row: ResultRow) = Article(
         articleId = row[Articles.articleId],
         content = row[Articles.content],
         author = row[Articles.author],
         like = row[Articles.like],
         agreement = row[Articles.agreement]
+    )
+
+    private fun resultRowToUser(row: ResultRow) = User(
+        userId = row[Users.userId],
+        nickname = row[Users.nickname],
+        thumbnail = row[Users.thumbnail]
     )
 
     override suspend fun insertUser(nickname: String, email: String, thumbnail: String): Unit = dbQuery {
@@ -52,5 +58,12 @@ class DAOFacadeImpl : DAOFacade {
         Articles.update({ Articles.articleId eq articleId }) {
             it[like] = like.plus(INCREASE_LIKES)
         }
+    }
+
+    override suspend fun getTopUsers(count: Int): List<User> = dbQuery {
+        Articles.selectAll()
+            .orderBy(Articles.like, SortOrder.DESC)
+            .limit(count)
+            .map(::resultRowToUser)
     }
 }
