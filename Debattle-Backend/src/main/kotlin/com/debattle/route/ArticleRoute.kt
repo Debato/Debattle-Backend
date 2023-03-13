@@ -11,7 +11,7 @@ fun Route.articleRoute(dao: DAOFacade) {
     get("article") {
         val articles = dao.getAllArticles()
 
-        call.respond(HttpStatusCode.OK, "articles" to articles)
+        call.respond(HttpStatusCode.OK, articles)
     }
 
     get("article/{id}") {
