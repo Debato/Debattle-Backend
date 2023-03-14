@@ -6,16 +6,16 @@ import org.jetbrains.exposed.sql.Table
 @Serializable
 data class Article(
     val articleId: Int,
+    val title: String,
     val content: String,
-    val author: String,
     val like: Int,
     val agreement: Boolean
 )
 
 object Articles : Table() {
     val articleId = integer("article_id").autoIncrement()
+    val title = varchar("title", 20)
     val content = varchar("content", 256)
-    val author = varchar("author", 200).references(Users.nickname)
     val like = integer("like")
     val agreement = bool("agreement")
 

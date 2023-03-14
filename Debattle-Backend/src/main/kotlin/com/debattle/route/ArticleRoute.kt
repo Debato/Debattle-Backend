@@ -25,11 +25,11 @@ fun Route.articleRoute(dao: DAOFacade) {
 
     post("article") {
         val params = call.receiveParameters()
+        val title = params["title"].toString()
         val content = params["content"].toString()
-        val author = params["author"].toString()
         val agreement = params["agreement"].toBoolean()
 
-        dao.postArticle(content, author, agreement)
+        dao.postArticle(title, content, agreement)
 
         call.respond(HttpStatusCode.OK)
     }

@@ -14,8 +14,8 @@ const val INCREASE_LIKES = 1
 class DAOFacadeImpl : DAOFacade {
     private fun resultRowToArticle(row: ResultRow) = Article(
         articleId = row[Articles.articleId],
+        title = row[Articles.title],
         content = row[Articles.content],
-        author = row[Articles.author],
         like = row[Articles.like],
         agreement = row[Articles.agreement]
     )
@@ -45,10 +45,10 @@ class DAOFacadeImpl : DAOFacade {
             .singleOrNull()
     }
 
-    override suspend fun postArticle(content: String, author: String, agreement: Boolean): Unit = dbQuery {
+    override suspend fun postArticle(title: String, content: String, agreement: Boolean): Unit = dbQuery {
         Articles.insert {
             it[Articles.content] = content
-            it[Articles.author] = author
+            it[Articles.title] = title
             it[like] = INIT_LIKES
             it[Articles.agreement] = agreement
         }
