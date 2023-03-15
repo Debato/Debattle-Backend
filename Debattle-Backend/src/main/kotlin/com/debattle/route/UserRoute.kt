@@ -23,7 +23,11 @@ fun Route.userRoute(dao: DAOFacade, client: HttpClient) {
         }.body()
 
         with(user) {
-            dao.insertUser(properties.nickname, properties.thumbnailImage, kakaoAccount.email)
+            dao.insertUser(
+                nickname = properties.nickname,
+                email = kakaoAccount.email,
+                thumbnail = properties.thumbnailImage
+            )
             call.respond(HttpStatusCode.Created)
         }
     }
