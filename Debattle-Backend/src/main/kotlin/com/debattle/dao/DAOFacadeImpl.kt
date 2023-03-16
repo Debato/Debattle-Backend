@@ -3,7 +3,6 @@ package com.debattle.dao
 import com.debattle.dao.DatabaseFactory.dbQuery
 import com.debattle.model.Article
 import com.debattle.model.Articles
-import com.debattle.model.User
 import com.debattle.model.Users
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.plus
@@ -19,13 +18,6 @@ class DAOFacadeImpl : DAOFacade {
         like = row[Articles.like],
         agreement = row[Articles.agreement]
     )
-
-    private fun resultRowToUser(row: ResultRow) = User(
-        userId = row[Users.userId],
-        nickname = row[Users.nickname],
-        thumbnail = row[Users.thumbnail]
-    )
-
     override suspend fun insertUser(nickname: String, email: String, thumbnail: String): Unit = dbQuery {
         Users.insert {
             it[Users.nickname] = nickname
@@ -60,10 +52,10 @@ class DAOFacadeImpl : DAOFacade {
         }
     }
 
-    override suspend fun getTopUsers(count: Int): List<User> = dbQuery {
+    override suspend fun getTopArticles(count: Int): List<Article> = dbQuery {
         Articles.selectAll()
             .orderBy(Articles.like, SortOrder.DESC)
             .limit(count)
-            .map(::resultRowToUser)
+            .map(::resultRowToArticle)
     }
 }

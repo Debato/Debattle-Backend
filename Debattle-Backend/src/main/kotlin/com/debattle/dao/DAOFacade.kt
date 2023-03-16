@@ -1,7 +1,6 @@
 package com.debattle.dao
 
 import com.debattle.model.Article
-import com.debattle.model.User
 
 interface DAOFacade {
     suspend fun insertUser(nickname: String, email: String, thumbnail: String)
@@ -14,5 +13,5 @@ interface DAOFacade {
 
     suspend fun updateLikes(articleId: Int)
 
-    suspend fun getTopUsers(count: Int): List<User>
+    suspend fun getTopArticles(count: Int): List<Article>
 }

@@ -34,8 +34,8 @@ fun Route.userRoute(dao: DAOFacade, client: HttpClient) {
 
     get("user/rank") {
         val count = call.request.queryParameters["count"]?.toIntOrNull() ?: DEFAULT_COUNT
-        val users = dao.getTopUsers(count)
+        val articles = dao.getTopArticles(count)
 
-        call.respond(HttpStatusCode.OK, "users" to users)
+        call.respond(HttpStatusCode.OK, "articles" to articles)
     }
 }
