@@ -34,7 +34,7 @@ fun Route.articleRoute(dao: DAOFacade) {
         call.respond(HttpStatusCode.OK)
     }
 
-    post("article/like/{id}") {
+    post("article/like/{articleId}") {
         val articleId = call.parameters["articleId"]?.toIntOrNull()
 
         articleId?.let {
